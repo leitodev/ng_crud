@@ -2,13 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 
+import { MatDialog } from '@angular/material/dialog';
+import { UserFormDialogComponent } from './user-form-dialog/user-form-dialog.component';
+import { Role } from '../core/constants/role';
+import { UserDialogAction } from './user-form-dialog/user-dialog-action';
+
 export interface User {
   id: number;
   name: string;
   surname: string;
   email: string;
   phone: string;
-  department: string;
+  role: Role;
 }
 
 @Component({
@@ -17,6 +22,7 @@ export interface User {
   styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent implements OnInit {
+  // TODO need to move it into service or firebase
   data: User[] = [
     {
       id: 123213,
@@ -24,7 +30,7 @@ export class UsersComponent implements OnInit {
       surname: 'Smith',
       email: 'maxsmith@gmail.com',
       phone: '093213213',
-      department: 'support',
+      role: Role.Support,
     },
     {
       id: 123443,
@@ -32,7 +38,7 @@ export class UsersComponent implements OnInit {
       surname: 'Dee',
       email: 'johnydee@gmail.com',
       phone: '09321323213',
-      department: 'dev',
+      role: Role.Dev,
     },
   ];
 
@@ -43,12 +49,13 @@ export class UsersComponent implements OnInit {
     'surname',
     'email',
     'phone',
-    'department',
+    'role',
+    'edit',
   ];
   dataSource = new MatTableDataSource<User>(this.data);
   selection = new SelectionModel<User>(true, []);
 
-  constructor() {}
+  constructor(public dialog: MatDialog) {}
 
   ngOnInit() {}
 
@@ -93,6 +100,25 @@ export class UsersComponent implements OnInit {
   }
 
   edit(row: User) {
-    console.log(row);
+    // TODO need to move it into service
+    const dialogRef = this.dialog.open(UserFormDialogComponent, {
+      data: {
+        title: `Edit ${row.name}`,
+        type: UserDialogAction.EDIT,
+        user: row,
+      },
+      width: '50vw',
+    });
+  }
+
+  add() {
+    // TODO need to move it into service
+    const dialogRef = this.dialog.open(UserFormDialogComponent, {
+      data: {
+        title: 'add new user',
+        type: UserDialogAction.ADD,
+      },
+      width: '50vw',
+    });
   }
 }

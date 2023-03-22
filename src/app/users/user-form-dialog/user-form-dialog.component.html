@@ -1,0 +1,49 @@
+<h2 mat-dialog-title>{{data.title}}</h2>
+<mat-dialog-content [formGroup]="form" class="mat-typography">
+  <mat-form-field appearance="outline">
+    <mat-label>Name:</mat-label>
+    <input matInput placeholder="Tom" formControlName="name" required>
+    <mat-error *ngIf="form.controls.name.invalid">
+      Name is required
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Surname:</mat-label>
+    <input matInput placeholder="Smith" formControlName="surname">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Email:</mat-label>
+    <input matInput placeholder="pat@example.com" formControlName="email" required>
+    <mat-error *ngIf="form.controls.email.invalid">
+      Not a valid email
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Phone:</mat-label>
+    <input matInput placeholder="Tom" formControlName="phone" required>
+    <mat-error *ngIf="form.controls.phone.invalid">
+      Phone is required
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Role:</mat-label>
+    <mat-select formControlName="role" required>
+      <ng-container *ngFor="let role of roles">
+        <mat-option [value]="role">{{role}}</mat-option>
+      </ng-container>
+    </mat-select>
+  </mat-form-field>
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button
+          color="primary"
+          mat-dialog-close
+  [disabled]="form.invalid" (click)="save()">Save</button>
+</mat-dialog-actions>
